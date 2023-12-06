@@ -7,6 +7,11 @@
     <string name="HIIT">HIIT</string>
     <string name="Tabata">Tabata\n</string>
     <string name="yog">Yog\n</string>
+    <string name="LEVES">Leves</string>
+    <string name="STONE">Stone\n</string>
+    <string name="cleveland">Cleveland</string>
+    <string name="Museum">"Museum "</string>
+    <string name="LEVESTWO">LevesTwo</string>
 
 
 </resources>

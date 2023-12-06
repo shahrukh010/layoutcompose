@@ -1,6 +1,7 @@
 package com.code.android_layout.components
 
 import AlignBodyItems
+import FavoriteCollection
 import alignBodyItems
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -10,12 +11,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -36,9 +41,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.drawable.toDrawable
 import com.code.android_layout.R
 import com.code.android_layout.ui.theme.AndroidlayoutTheme
+import favoriteCollection
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,6 +105,8 @@ fun FavoriteCollectionCard(
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
+//        shadowElevation = 4.dp, // Adjust the elevation as needed
+        color = Color.hsl(0.00F, 0.00F, 0.93F),
         modifier = Modifier
             .width(255.dp)
             .heightIn(100.dp),
@@ -109,8 +116,7 @@ fun FavoriteCollectionCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .width(255.dp)
-                .padding(start = 10.dp),
+                .width(255.dp),
         ) {
 
             Image(
@@ -150,12 +156,34 @@ fun AlignYourBodyRow(
     }
 }
 
+@Composable
+fun FavoriteCollectionGrid(
+    modifier: Modifier = Modifier,
+    favoriteCollection: List<FavoriteCollection>
+
+) {
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(2),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.height(168.dp)
+    ) {
+
+        items(favoriteCollection) { item ->
+            FavoriteCollectionCard(item.drawable, item.text);
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
 fun SearchBarPreview() {
 
     AndroidlayoutTheme {
-        AlignYourBodyRow(alignYourBodyData = alignBodyItems)
+//        FavoriteCollectionCard(drawable = R.drawable.leves1, text = R.string.LEVES)
+//        AlignYourBodyRow(alignYourBodyData = alignBodyItems)
+
+        FavoriteCollectionGrid(favoriteCollection = favoriteCollection)
     }
 }
