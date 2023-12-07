@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -21,12 +22,20 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,14 +77,11 @@ fun SearchBar(
 
 @Composable
 fun AlignYourBodyElement(
-    @DrawableRes drawable: Int,
-    @StringRes text: Int,
-    modifier: Modifier = Modifier
+    @DrawableRes drawable: Int, @StringRes text: Int, modifier: Modifier = Modifier
 ) {
 
     Column(
-        modifier = Modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Image(
@@ -99,9 +106,7 @@ fun AlignYourBodyElement(
 
 @Composable
 fun FavoriteCollectionCard(
-    @DrawableRes drawable: Int,
-    @StringRes text: Int,
-    modifier: Modifier = Modifier
+    @DrawableRes drawable: Int, @StringRes text: Int, modifier: Modifier = Modifier
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -115,8 +120,7 @@ fun FavoriteCollectionCard(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .width(255.dp),
+            modifier = Modifier.width(255.dp),
         ) {
 
             Image(
@@ -137,8 +141,7 @@ fun FavoriteCollectionCard(
 
 @Composable
 fun AlignYourBodyRow(
-    modifier: Modifier = Modifier,
-    alignYourBodyData: List<AlignBodyItems>
+    modifier: Modifier = Modifier, alignYourBodyData: List<AlignBodyItems>
 ) {
     LazyRow(
         modifier = modifier,
@@ -149,8 +152,7 @@ fun AlignYourBodyRow(
 
         items(alignYourBodyData.size) { index ->
             AlignYourBodyElement(
-                drawable = alignYourBodyData[index].drawable,
-                text = alignYourBodyData[index].text
+                drawable = alignYourBodyData[index].drawable, text = alignYourBodyData[index].text
             )
         }
     }
@@ -158,8 +160,7 @@ fun AlignYourBodyRow(
 
 @Composable
 fun FavoriteCollectionGrid(
-    modifier: Modifier = Modifier,
-    favoriteCollection: List<FavoriteCollection>
+    modifier: Modifier = Modifier, favoriteCollection: List<FavoriteCollection>
 
 ) {
     LazyHorizontalGrid(
@@ -176,6 +177,120 @@ fun FavoriteCollectionGrid(
     }
 }
 
+@Composable
+fun HomeSection(
+    @StringRes title: Int, modifier: Modifier = Modifier, content: @Composable () -> Unit
+) {
+
+    Column(modifier) {
+        Text(
+            stringResource(title),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .paddingFromBaseline(top = 40.dp, bottom = 16.dp)
+                .padding(horizontal = 16.dp)
+        )
+        content();
+    }
+}
+
+@Composable
+fun HomeScreen(modifier: Modifier = Modifier) {
+
+    Column(
+        modifier.verticalScroll(rememberScrollState())
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        SearchBar(Modifier.padding(horizontal = 16.dp))
+        HomeSection(title = R.string.title) {
+            AlignYourBodyRow(alignYourBodyData = alignBodyItems)
+        }
+        HomeSection(title = R.string.favorite) {
+            FavoriteCollectionGrid(favoriteCollection = favoriteCollection)
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun BottomNavigation(modifier: Modifier = Modifier) {
+
+    NavigationBar(
+        contentColor = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+    ) {
+
+        NavigationBarItem(
+            icon = {
+
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null,
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(
+                        R.string.bottom_navigation_home
+                    )
+                )
+            },
+            selected = true,
+            onClick = {}
+        )
+        NavigationBarItem(modifier = Modifier.size(150.dp),
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Person, contentDescription = null,
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.bottom_navigation_profile),
+                )
+            },
+            selected = true, onClick = {}
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun App() {
+
+    AndroidlayoutTheme {
+        Scaffold(
+            bottomBar = { BottomNavigation() }
+        ) { padding ->
+            HomeScreen(Modifier.padding(padding))
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ScreenContentPreview() {
+
+    AndroidlayoutTheme {
+//        HomeScreen()
+//        BottomNavigation()
+        App();
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomeSectionPreview() {
+    AndroidlayoutTheme {
+        HomeSection(R.string.favorite) {
+
+//            AlignYourBodyRow(alignYourBodyData = alignBodyItems)
+//            FavoriteCollectionGrid(favoriteCollection = favoriteCollection)
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun SearchBarPreview() {
@@ -184,6 +299,6 @@ fun SearchBarPreview() {
 //        FavoriteCollectionCard(drawable = R.drawable.leves1, text = R.string.LEVES)
 //        AlignYourBodyRow(alignYourBodyData = alignBodyItems)
 
-        FavoriteCollectionGrid(favoriteCollection = favoriteCollection)
+//        FavoriteCollectionGrid(favoriteCollection = favoriteCollection)
     }
 }

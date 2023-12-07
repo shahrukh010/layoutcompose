@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.code.android_layout.components.HomeScreen
 import com.code.android_layout.components.SearchBar
 import com.code.android_layout.ui.theme.AndroidlayoutTheme
 
@@ -21,40 +22,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             AndroidlayoutTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                HomeScreen();
             }
         }
     }
 }
 
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     AndroidlayoutTheme {
-        Greeting("Android")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SearchBarPreview() {
-
-    AndroidlayoutTheme {
-
-        SearchBar();
+        HomeScreen();
     }
 }

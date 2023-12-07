@@ -12,6 +12,10 @@
     <string name="cleveland">Cleveland</string>
     <string name="Museum">"Museum "</string>
     <string name="LEVESTWO">LevesTwo</string>
+    <string name="title">Align Your Body</string>
+    <string name="favorite">Favorite Collections</string>
+    <string name="bottom_navigation_home">Home\n</string>
+    <string name="bottom_navigation_profile">Profile\n</string>
 
 
 </resources>
